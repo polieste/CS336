@@ -1,23 +1,17 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 export default function ImageGrid({imageData}) {
   return (
     <ImageList sx={{ }} cols={4} >
-      {imageData.map((item) => (
-        <ImageListItem key={item.name}>
+      {itemData.map((item) => (
+        <ImageListItem key={item.img}>
           <img
-            src={`images/${item.name}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${item.name}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.score}
+            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+            alt={item.title}
             loading="lazy"
-          />
-          <ImageListItemBar
-            title={item.name.slice(0, -4)}
-            subtitle={<span>score: {item.score}</span>}
-            position="below"
           />
         </ImageListItem>
       ))}

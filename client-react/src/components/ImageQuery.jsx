@@ -2,23 +2,19 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input"
-import TextField from "@mui/material/TextField"
 
 import SearchIcon from "@mui/icons-material/Search"
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
-const SERVER = "http://127.0.0.1:8000"
+const SERVER = ""
 
-const ImageQuery = ({ setData }) => {
+const ImageQuery = () => {
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState(null);
-
   const [cropData, setCropData] = useState(null);
   const [cropper, setCropper] = useState();
-
-  const [topK, setTopK] = useState(50);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -36,27 +32,18 @@ const ImageQuery = ({ setData }) => {
     reader.readAsDataURL(files[0]);
   };
 
-  const handleTopKChange = (event) => {
-    setTopK(event.target.value)
-  }
-
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
       setCropData(cropper.getCroppedCanvas().toDataURL());
 
-
       cropper.getCroppedCanvas().toBlob((blob) => {
-        const formData = new FormData();
-
-        formData.append('croppedImage', blob)
-        
-        fetch(`/search/${topK}`, {
+        fetch(`/search`, {
           method: "POST",
-          body: formData
+          body: blob
         }).then(
           response => response.json()
         ).then(
-          data => setData(data)
+          success => console.log(success)
         ).catch(
           error => console.log(error)
         );
@@ -65,7 +52,7 @@ const ImageQuery = ({ setData }) => {
   };
 
   return (
-    <Box >
+    <Box>
       <h3>Upload image</h3>
       <Input
         type="file"
@@ -73,12 +60,12 @@ const ImageQuery = ({ setData }) => {
         onChange={handleChange}
       />
       {image && (
-        <Box sx={{ marginBottom: "50px", display: "flex" }}>
+        <Box sx={{ display: "flex" }}>
           <Box sx={{ width: "50%", height: 600, padding: 1 }}>
             <h3>Searching image {imageName}</h3>
             <Cropper
               src={image}
-              style={{ height: "95%", width: "100%" }}
+              style={{ height: "100%", width: "100%" }}
               zoomTo={0.5}
               initialAspectRatio={1}
               viewMode={1}
@@ -96,27 +83,8 @@ const ImageQuery = ({ setData }) => {
               cropBoxMovable={false}
             />
           </Box>
-          <Box sx={{
-            display: "flex",
-            flexFlow: "column",
-            alignItems: "center",
-            padding: 1,
-            justifyContent: "center",
-            gap: 2,
-          }}
-          >
+          <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
             <Button variant="contained" startIcon={<SearchIcon />} onClick={getCropData}>Search</Button>
-            <TextField
-              id="outlined-number"
-              label="Top K"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-
-              value={topK}
-              onChange={handleTopKChange}
-            />
           </Box>
           {cropData &&
             <Box sx={{ width: "40%", height: 600, padding: 1 }}>
