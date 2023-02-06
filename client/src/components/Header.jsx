@@ -8,7 +8,7 @@ export default function Header() {
     <Box >
       <Grid container justifyContent="center" >
         <Grid item>
-          <Typography variant="h1" textAlign='center' gutterBottom>
+          <Typography variant="h2" textAlign='center' gutterBottom>
             Image Retrieval System
           </Typography>
         </Grid>

@@ -17,7 +17,7 @@ ap.add_argument("--num", type=int, required=True, help="Number of query images")
 ap.add_argument("--feature", required=False, help="Features indexing file path")
 args = vars(ap.parse_args())
 
-DATA_PATH = "../app/static/data/images/"
+DATA_PATH = "../data/images/"
 
 
 def main():

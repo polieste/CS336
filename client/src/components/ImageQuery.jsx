@@ -3,6 +3,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input"
 import TextField from "@mui/material/TextField"
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 import SearchIcon from "@mui/icons-material/Search"
 
@@ -10,6 +15,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 const SERVER = "http://127.0.0.1:8000"
+
 
 const ImageQuery = ({ setData }) => {
   const [image, setImage] = useState(null);
@@ -20,7 +26,9 @@ const ImageQuery = ({ setData }) => {
 
   const [topK, setTopK] = useState(50);
 
-  const handleChange = (e) => {
+  const [method, setMethod] = useState("kdtree");
+
+  const handleFileChange = (e) => {
     e.preventDefault();
     let files;
     if (e.dataTransfer) {
@@ -40,6 +48,10 @@ const ImageQuery = ({ setData }) => {
     setTopK(event.target.value)
   }
 
+  const handleMethodChange = (event) => {
+    setMethod(event.target.value)
+  }
+
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
       setCropData(cropper.getCroppedCanvas().toDataURL());
@@ -49,8 +61,8 @@ const ImageQuery = ({ setData }) => {
         const formData = new FormData();
 
         formData.append('croppedImage', blob)
-        
-        fetch(`/search/${topK}`, {
+
+        fetch(`/search/${method}/${topK}`, {
           method: "POST",
           body: formData
         }).then(
@@ -70,7 +82,7 @@ const ImageQuery = ({ setData }) => {
       <Input
         type="file"
         name="myImage"
-        onChange={handleChange}
+        onChange={handleFileChange}
       />
       {image && (
         <Box sx={{ marginBottom: "50px", display: "flex" }}>
@@ -97,6 +109,7 @@ const ImageQuery = ({ setData }) => {
             />
           </Box>
           <Box sx={{
+            width: "10%",
             display: "flex",
             flexFlow: "column",
             alignItems: "center",
@@ -105,7 +118,23 @@ const ImageQuery = ({ setData }) => {
             gap: 2,
           }}
           >
-            <Button variant="contained" startIcon={<SearchIcon />} onClick={getCropData}>Search</Button>
+            <Box sx={{width: "100%"}}>
+              <FormControl fullWidth>
+                <InputLabel id="method">Method</InputLabel>
+                <Select
+                  labelId="method"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Method"
+                  value={method}
+                  onChange={handleMethodChange}
+                >
+                  <MenuItem value={"kdtree"}>kd-tree</MenuItem>
+                  <MenuItem value={"lsh"}>LSH</MenuItem>
+                  <MenuItem value={"faiss"}>faiss</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             <TextField
               id="outlined-number"
               label="Top K"
@@ -113,10 +142,10 @@ const ImageQuery = ({ setData }) => {
               InputLabelProps={{
                 shrink: true,
               }}
-
               value={topK}
               onChange={handleTopKChange}
             />
+            <Button variant="contained" startIcon={<SearchIcon />} onClick={getCropData}>Search</Button>
           </Box>
           {cropData &&
             <Box sx={{ width: "40%", height: 600, padding: 1 }}>
