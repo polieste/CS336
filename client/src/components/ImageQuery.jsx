@@ -124,11 +124,11 @@ const ImageQuery = ({ setData }) => {
                 <Select
                   labelId="method"
                   id="demo-simple-select"
-                  // value={age}
                   label="Method"
                   value={method}
                   onChange={handleMethodChange}
                 >
+                  <MenuItem value={"argsort"}>argsort</MenuItem>
                   <MenuItem value={"kdtree"}>kd-tree</MenuItem>
                   <MenuItem value={"lsh"}>LSH</MenuItem>
                   <MenuItem value={"faiss"}>faiss</MenuItem>

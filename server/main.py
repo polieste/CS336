@@ -83,3 +83,4 @@ def search(croppedImage: UploadFile, method: str, topK: int):
         ids = np.argsort(dists)[:topK]
         results = [{"name": str(names[index_img], 'utf-8'),
                     "score": round(float(dists[index_img]), 6)} for index_img in ids]
+        return results
