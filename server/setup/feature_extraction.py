@@ -24,7 +24,7 @@ class FeatureExtractor:
         feature = self.model.predict(x)[0]  # (1, 4096) -> (4096, )
         return feature / np.linalg.norm(feature)  # Normalize
 
-    def load(self, path="../app/static/data/images/"):
+    def load(self, path="../data/images/"):
         from dimension_reduction import perform_pca_on_single_vector
         features = []
         names = []

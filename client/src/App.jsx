@@ -17,7 +17,7 @@ function App() {
   console.log(imageData)
   
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ }}>
       <Header />
       <ImageQuery setData={setData}/>
       {imageData && (<ImageGrid imageData={imageData} />)}

@@ -17,13 +17,13 @@ ap.add_argument("--feature", required=False, help="Features indexing file path")
 ap.add_argument("--pca", required=False, help="Enable pca")
 args = vars(ap.parse_args())
 
-img_path = '../app/static/data/images/'
-gt_path = '../app/static/data/gt_files/'
+img_path = '../data/images/'
+gt_path = '../data/gt_files/'
 
 extractor = FeatureExtractor()
-index_path = '../app/static/data/features_no_pca.h5'
+index_path = '../data/features/features_no_pca.h5'
 if args['pca'] is not None:
-    index_path = '../app/static/data/features_pca.h5'
+    index_path = '../data/features/features_pca.h5'
 if args['feature'] is not None:
     index_path = args['feature']
 features, names = Index(name=index_path).get()

@@ -8,14 +8,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-
 import SearchIcon from "@mui/icons-material/Search"
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import { Grid, Typography } from "@mui/material";
 
 const SERVER = "http://127.0.0.1:8000"
-
 
 const ImageQuery = ({ setData }) => {
   const [image, setImage] = useState(null);
@@ -56,7 +55,6 @@ const ImageQuery = ({ setData }) => {
     if (typeof cropper !== "undefined") {
       setCropData(cropper.getCroppedCanvas().toDataURL());
 
-
       cropper.getCroppedCanvas().toBlob((blob) => {
         const formData = new FormData();
 
@@ -77,20 +75,51 @@ const ImageQuery = ({ setData }) => {
   };
 
   return (
-    <Box >
-      <h3>Upload image</h3>
-      <Input
-        type="file"
-        name="myImage"
-        onChange={handleFileChange}
-      />
+    <Box style={{ top: 20, display: "flex", flexFlow: "column", alignItems: "center" }}>
+      <label htmlFor="imageUploader"
+        style={{
+          height: 150,
+          width: 400,
+          border: "3px dashed #2F6BFF",
+          borderRadius: 10,
+          position: "relative",
+          cursor: "pointer",
+        }}
+      >
+        <input
+          id="imageUploader"
+          type="file"
+          name="imageUploader"
+          onChange={handleFileChange}
+          style={{
+            width: "100%",
+            height: "100%",
+            opacity: 0,
+            cursor: "pointer",
+          }}
+        />
+        <Box style={{
+          width: "max-content",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: -1,
+
+        }}>
+          <img src="./assets/upload.png" style={{ height: 50 }} />
+          <Typography color={''} fontStyle={'italic'}>
+            Drop file here or Click to upload image
+          </Typography>
+        </Box>
+      </label>
       {image && (
-        <Box sx={{ marginBottom: "50px", display: "flex" }}>
-          <Box sx={{ width: "50%", height: 600, padding: 1 }}>
+        <Grid container sx={{ marginTop: 5, marginBottom: 5, }}>
+          <Grid item xs={5.5} sx={{ padding: 1 }}>
             <h3>Searching image {imageName}</h3>
             <Cropper
               src={image}
-              style={{ height: "95%", width: "100%" }}
+              style={{ height: 500 }}
               zoomTo={0.5}
               initialAspectRatio={1}
               viewMode={1}
@@ -107,34 +136,31 @@ const ImageQuery = ({ setData }) => {
               zoomable={false}
               cropBoxMovable={false}
             />
-          </Box>
-          <Box sx={{
-            width: "10%",
+          </Grid>
+          <Grid item xs={1.5} sx={{
             display: "flex",
             flexFlow: "column",
             alignItems: "center",
             padding: 1,
             justifyContent: "center",
             gap: 2,
-          }}
-          >
-            <Box sx={{width: "100%"}}>
-              <FormControl fullWidth>
-                <InputLabel id="method">Method</InputLabel>
-                <Select
-                  labelId="method"
-                  id="demo-simple-select"
-                  label="Method"
-                  value={method}
-                  onChange={handleMethodChange}
-                >
-                  <MenuItem value={"argsort"}>argsort</MenuItem>
-                  <MenuItem value={"kdtree"}>kd-tree</MenuItem>
-                  <MenuItem value={"lsh"}>LSH</MenuItem>
-                  <MenuItem value={"faiss"}>faiss</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+          }}>
+
+            <FormControl fullWidth>
+              <InputLabel id="method">Method</InputLabel>
+              <Select
+                labelId="method"
+                id="demo-simple-select"
+                label="Method"
+                value={method}
+                onChange={handleMethodChange}
+              >
+                <MenuItem value={"argsort"}>argsort</MenuItem>
+                <MenuItem value={"lsh"}>LSH</MenuItem>
+                <MenuItem value={"faiss"}>faiss-FlatL2</MenuItem>
+                <MenuItem value={"kdtree"}>kd-tree</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               id="outlined-number"
               label="Top K"
@@ -146,19 +172,22 @@ const ImageQuery = ({ setData }) => {
               onChange={handleTopKChange}
             />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={getCropData}>Search</Button>
-          </Box>
-          {cropData &&
-            <Box sx={{ width: "40%", height: 600, padding: 1 }}>
-              <h3>Cropped image</h3>
-              <img
-                src={cropData}
-                alt="cropped"
-                style={{ objectFit: "contain", maxHeight: "100%", maxWidth: "100%", }} />
-            </Box>}
-        </Box>
+          </Grid>
+          <Grid item xs={5}>
+            {cropData &&
+              <Box sx={{ height: 500 }}>
+                <h3>Cropped image</h3>
+                <img
+                  src={cropData}
+                  alt="cropped"
+                  style={{ objectFit: "contain", maxHeight: "100%", maxWidth: "100%", }} />
+              </Box>}
+          </Grid>
+        </Grid>
       )}
     </Box>
   );
 };
 
+export default ImageQuery;
 export default ImageQuery;

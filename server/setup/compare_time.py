@@ -19,14 +19,13 @@ args = vars(ap.parse_args())
 
 DATA_PATH = "../data/images/"
 
-
 def main():
     extractor = FeatureExtractor()
-    # Get random num files
+    
     list_images = os.listdir(DATA_PATH)
     query_images = [random.choice(list_images) for _ in range(int(args['num']))]
     for method in ['No large scale', 'pca', 'kdtree', 'lsh', 'faiss']:
-        index_path = '../app/static/data/features_no_pca.h5'
+        index_path = '../data/features/features_no_pca.h5'
         if args['feature'] is not None:
             index_path = args['feature']
         features, names = Index(name=index_path).get()
@@ -45,7 +44,7 @@ def main():
             index_flat.train(features)
             index_flat.add(features)
         elif method == 'pca':
-            index_path = '../app/static/data/features_pca.h5'
+            index_path = '../data/features/features_pca.h5'
             features, names = Index(name=index_path).get()
         for img in query_images:
             start = time.time()

@@ -3,7 +3,7 @@ import numpy as np
 
 
 class Index:
-    def __init__(self, name="../app/static/data/features.h5"):
+    def __init__(self, name="'../data/features/features.h5"):
         self.name = name
 
     def set(self, feats, names):

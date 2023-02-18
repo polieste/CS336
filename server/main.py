@@ -46,11 +46,7 @@ def search(croppedImage: UploadFile, method: str, topK: int):
     img = Image.open(contents)
 
     query = extractor.extract(img)
-    # PCA
-    # if args['pca'] is not None:
-    #     query = perform_pca_on_single_vector(query, 5, 512)
 
-  
     if method == 'kdtree':
         # Large scale search using kd-tree
         query = np.expand_dims(query, axis=0)
@@ -58,14 +54,14 @@ def search(croppedImage: UploadFile, method: str, topK: int):
         dists = np.squeeze(dists, axis=0)
         ids = np.squeeze(ids, axis=0)
         results = [{"name": str(names[index_img], 'utf-8'),
-                    "score": round(float(dists[i]), 6)} for i, index_img in enumerate(ids)]
+                    "dist": round(float(dists[i]), 6)} for i, index_img in enumerate(ids)]
 
         return results
     elif method == 'lsh':
         # Large scale search using LSH
         lsh_search = lsh.query(query, num_results=topK)
         results = [{"name": str(name, 'utf-8'),
-                    "score": round(float(dist), 6)} for ((vec, name), dist) in lsh_search]
+                    "dist": round(float(dist), 6)} for ((vec, name), dist) in lsh_search]
         return results
   
     elif method == 'faiss':
@@ -75,12 +71,12 @@ def search(croppedImage: UploadFile, method: str, topK: int):
         dists = np.squeeze(dists, axis=0)
         ids = np.squeeze(ids, axis=0)
         results = [{"name": str(names[index_img], 'utf-8'), 
-                    "score": round(float(dists[i]), 6)} for i, index_img in enumerate(ids)]
+                    "dist": round(float(dists[i]), 6)} for i, index_img in enumerate(ids)]
         return results
     else:   
     # Normal calculate euclid distance
         dists = np.linalg.norm(features - query, axis=1)
         ids = np.argsort(dists)[:topK]
         results = [{"name": str(names[index_img], 'utf-8'),
-                    "score": round(float(dists[index_img]), 6)} for index_img in ids]
+                    "dist": round(float(dists[index_img]), 6)} for index_img in ids]
         return results
