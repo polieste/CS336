@@ -56,14 +56,14 @@ conda activate <env_name>
 uvicorn main:app --reload
 ```
 
-##Extract Feature
+## Extract Feature
 
 * Change directory to setup folder:
 ```bash
 cd server/setup
 ```
 
-*Run
+* Run
 ```bash
 python export_feature.py [-path]
 Export feature indexing file to path.
