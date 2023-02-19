@@ -86,3 +86,8 @@ python evaluation.py [-large] [-feature] [-top]
  ```
 
 ## Contribution
+| Student Code | Name  | Github  |
+| -------- | ------------------ | ----- |
+| 20521011 | Nguyen Tran Tien |  |
+| -------- | ------------------ | ----- |
+| 20521394 | Le Nguyen Minh Huy |  |
