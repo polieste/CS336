@@ -85,7 +85,7 @@ python evaluation.py [-large] [-feature] [-top]
   -top = [INT]                           Number of ranked lists element (compulsory)
  ```
 
-* Compare efficience of methods:
+* Compare efficiency of methods:
 ```bash
 python compare_time.py
 ```
