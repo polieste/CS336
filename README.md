@@ -63,7 +63,7 @@ uvicorn main:app --reload
 cd server/setup
 ```
 
-* Export feature indexing file to path.
+* Export feature indexing file to path:
 ```bash
 python export_feature.py [-path]
   -path: Path to save features file (including file name.h5)
@@ -76,7 +76,7 @@ python export_feature.py [-path]
 cd server/setup
 ```
 
-* Run system evaluation.
+* Run system evaluation:
 ```bash
 python evaluation.py [-large] [-feature] [-top]
   -large = argsort if None
@@ -84,6 +84,11 @@ python evaluation.py [-large] [-feature] [-top]
   -feature = [PATH]                      Features indexing file path
   -top = [INT]                           Number of ranked lists element (compulsory)
  ```
+
+* Compare efficience of methods:
+```bash
+python compare_time.py
+```
 
 ## Contribution
 | Student Code | Name  | Github  |
