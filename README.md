@@ -63,10 +63,9 @@ uvicorn main:app --reload
 cd server/setup
 ```
 
-* Run
+* Export feature indexing file to path.
 ```bash
 python export_feature.py [-path]
-Export feature indexing file to path.
 -path: Path to save features file (including file name.h5)
 ```
 
@@ -77,10 +76,9 @@ Export feature indexing file to path.
 cd server/setup
 ```
 
-* Run
+* Run system evaluation.
 ```bash
 python evaluation.py [-large] [-feature] [-top]
-Run system evaluation.
   -large = argsort if None
          = ['kdtree', 'lsh', 'faiss']    Large scale method
   -feature = [PATH]                      Features indexing file path
