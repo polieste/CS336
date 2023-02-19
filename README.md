@@ -56,6 +56,33 @@ conda activate <env_name>
 uvicorn main:app --reload
 ```
 
+##Extract Feature
+
+* Change directory to setup folder:
+```bash
+cd server/setup
+```
+
+*Run
+```bash
+python export_feature.py [-path]
+Export feature indexing file to path.
+-path: Path to save features file (including file name.h5)
+```
+
 ## Evaluation:
+
+* Change directory to setup folder:
+```bash
+cd server/setup
+```
+
+*Run
+python evaluation.py [-large] [-feature] [-top]
+Run system evaluation.
+  -large = argsort if None
+         = ['kdtree', 'lsh', 'faiss']    Large scale method
+  -feature = [PATH]                      Features indexing file path
+  -top = [INT]                           Number of ranked lists element (compulsory)
 
 ## Contribution
