@@ -77,12 +77,14 @@ Export feature indexing file to path.
 cd server/setup
 ```
 
-*Run
+* Run
+```bash
 python evaluation.py [-large] [-feature] [-top]
 Run system evaluation.
   -large = argsort if None
          = ['kdtree', 'lsh', 'faiss']    Large scale method
   -feature = [PATH]                      Features indexing file path
   -top = [INT]                           Number of ranked lists element (compulsory)
+ ```
 
 ## Contribution
