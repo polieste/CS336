@@ -3,27 +3,24 @@ import os
 import numpy as np
 from feature_extraction import FeatureExtractor
 from indexing import Index
-from dimension_reduction import perform_pca_on_single_vector
 from PIL import Image
 from sklearn.neighbors import KDTree
 from lshashpy3 import LSHash
 import argparse
 import faiss
+import constants
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--large", choices=['kdtree', 'lsh', 'faiss'], required=False, help="Large scale method")
 ap.add_argument("--top", required=True, help="Number of ranked lists element")
 ap.add_argument("--feature", required=False, help="Features indexing file path")
-ap.add_argument("--pca", required=False, help="Enable pca")
 args = vars(ap.parse_args())
 
-img_path = '../data/images/'
-gt_path = '../data/gt_files/'
+img_path = constants.IMG_PATH
+gt_path = constants.GT_PATH
 
 extractor = FeatureExtractor()
-index_path = '../data/features/features_no_pca.h5'
-if args['pca'] is not None:
-    index_path = '../data/features/features_pca.h5'
+index_path = constants.FEATURE_PATH
 if args['feature'] is not None:
     index_path = args['feature']
 features, names = Index(name=index_path).get()
@@ -78,10 +75,7 @@ def get_ranked_lists(file_name):
     img = img.crop((int(float(file_data[1])), int(float(file_data[2])), int(float(file_data[3])), int(float(file_data[4]))))
 
     query = extractor.extract(img)
-    # PCA
-    if args['pca'] is not None:
-        query = perform_pca_on_single_vector(query, 5, 512)
-
+  
     if args['large'] is not None:
         if args['large'] == 'kdtree':
             # Large scale search using kd-tree

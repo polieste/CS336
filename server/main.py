@@ -8,7 +8,6 @@ import faiss
 
 from setup.feature_extraction import FeatureExtractor
 from setup.indexing import Index
-from setup.dimension_reduction import perform_pca_on_single_vector
 
 index_path = './data/features/features_no_pca.h5'
 

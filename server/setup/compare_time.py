@@ -2,7 +2,6 @@ import time
 import numpy as np
 from feature_extraction import FeatureExtractor
 from indexing import Index
-from dimension_reduction import perform_pca_on_single_vector
 from PIL import Image
 from sklearn.neighbors import KDTree
 from lshashpy3 import LSHash
@@ -10,22 +9,22 @@ import argparse
 import faiss
 import os
 import random
-
+import constants
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--num", type=int, required=True, help="Number of query images")
 ap.add_argument("--feature", required=False, help="Features indexing file path")
 args = vars(ap.parse_args())
 
-DATA_PATH = "../data/images/"
+img_path = constants.IMG_PATH
 
 def main():
     extractor = FeatureExtractor()
     
-    list_images = os.listdir(DATA_PATH)
+    list_images = os.listdir(img_path)
     query_images = [random.choice(list_images) for _ in range(int(args['num']))]
     for method in ['No large scale', 'pca', 'kdtree', 'lsh', 'faiss']:
-        index_path = '../data/features/features_no_pca.h5'
+        index_path = constants.FEATURE_PATH
         if args['feature'] is not None:
             index_path = args['feature']
         features, names = Index(name=index_path).get()
@@ -43,23 +42,17 @@ def main():
                 index_flat = faiss.index_cpu_to_gpu(res, 0, index_flat)
             index_flat.train(features)
             index_flat.add(features)
-        elif method == 'pca':
-            index_path = '../data/features/features_pca.h5'
-            features, names = Index(name=index_path).get()
+
         for img in query_images:
             start = time.time()
             try:
-                img = Image.open(os.path.join(DATA_PATH, img))
+                img = Image.open(os.path.join(img_path, img))
             except:
                 continue
 
             query = extractor.extract(img)
-            # PCA
-            if method == 'pca':
-                query = perform_pca_on_single_vector(query, 5, 512)
-                dists = np.linalg.norm(features - query, axis=1)
-                ids = np.argsort(dists)[:30]
-            elif method == 'kdtree':
+    
+            if method == 'kdtree':
                 query = np.expand_dims(query, axis=0)
                 dists, ids = features.query(query, k=30)
             elif method == 'lsh':
