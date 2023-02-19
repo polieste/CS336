@@ -66,7 +66,7 @@ cd server/setup
 * Export feature indexing file to path.
 ```bash
 python export_feature.py [-path]
--path: Path to save features file (including file name.h5)
+  -path: Path to save features file (including file name.h5)
 ```
 
 ## Evaluation:
